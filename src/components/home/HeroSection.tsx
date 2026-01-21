@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import heroImage from "@/assets/hero-ayurveda.jpg";
 
 export const HeroSection = () => {
   return (
@@ -64,16 +65,16 @@ export const HeroSection = () => {
             </div>
           </div>
 
-          {/* Hero Image Placeholder */}
+          {/* Hero Image */}
           <div className="relative hidden lg:block">
             <div className="relative w-full aspect-square max-w-lg mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/30 to-turmeric/20 rounded-full animate-float" />
-              <div className="absolute inset-8 bg-primary-foreground/10 rounded-full backdrop-blur-sm border border-primary-foreground/20 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-6xl mb-4">🌿</div>
-                  <p className="font-serif text-2xl text-primary-foreground">Ancient Wisdom</p>
-                  <p className="text-primary-foreground/80 text-sm mt-2">Modern Wellness</p>
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/30 to-turmeric/20 rounded-full blur-2xl animate-float" />
+              <div className="relative rounded-full overflow-hidden border-4 border-primary-foreground/20 shadow-2xl">
+                <img 
+                  src={heroImage} 
+                  alt="Ayurvedic herbs and ingredients - mortar and pestle with turmeric, amla, and natural herbs" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
