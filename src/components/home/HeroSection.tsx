@@ -58,9 +58,8 @@ export const HeroSection = () => {
       <FloatingLeaf delay={2} x="15%" y="75%" size={28} rotate={10} />
       <FloatingLeaf delay={4} x="50%" y="85%" size={22} rotate={-20} />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Content */}
+      <div className="container mx-auto px-4 relative z-20">
+        <div className="max-w-2xl">
           <motion.div 
             className="text-primary-foreground space-y-6"
             initial={{ opacity: 0, x: -50 }}
@@ -155,69 +154,31 @@ export const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Hero Image */}
-          <motion.div 
-            className="relative hidden lg:block"
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-          >
-            <div className="relative w-full aspect-square max-w-lg mx-auto">
-              {/* Outer glow ring */}
-              <motion.div 
-                className="absolute -inset-4 bg-gradient-to-br from-accent/40 via-turmeric/30 to-accent/20 rounded-full blur-2xl"
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                  rotate: [0, 5, 0]
-                }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              />
-              
-              {/* Decorative ring */}
-              <motion.div 
-                className="absolute -inset-2 rounded-full border-2 border-dashed border-accent/30"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              />
-              
-              {/* Image container */}
-              <motion.div 
-                className="relative rounded-full overflow-hidden border-4 border-primary-foreground/20 shadow-2xl shadow-primary/30"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <img 
-                  src={heroImage} 
-                  alt="Ayurvedic herbs and ingredients - mortar and pestle with turmeric, amla, and natural herbs" 
-                  className="w-full h-full object-cover"
-                />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent" />
-              </motion.div>
-              
-              {/* Floating accent elements */}
-              <motion.div 
-                className="absolute -top-4 -right-4 w-16 h-16 bg-accent/80 rounded-full flex items-center justify-center shadow-lg"
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <span className="text-2xl">🌿</span>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -bottom-2 -left-2 w-12 h-12 bg-turmeric/90 rounded-full flex items-center justify-center shadow-lg"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              >
-                <span className="text-xl">✨</span>
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
       </div>
+
+      {/* Full-bleed Hero Image with Fade Effect */}
+      <motion.div 
+        className="absolute inset-y-0 right-0 w-full lg:w-2/3 hidden lg:block"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <div className="relative h-full w-full">
+          <img 
+            src={heroImage} 
+            alt="Ayurvedic herbs and ingredients - mortar and pestle with turmeric, amla, and natural herbs" 
+            className="h-full w-full object-cover object-center"
+          />
+          {/* Gradient fade from right to left */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
+          {/* Bottom fade */}
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-primary/30" />
+        </div>
+      </motion.div>
       
       {/* Bottom wave decoration */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background/50 to-transparent z-10" />
     </section>
   );
 };
