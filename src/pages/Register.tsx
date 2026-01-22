@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Lock, User, ArrowRight, Sparkles } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { z } from "zod";
@@ -31,14 +30,6 @@ export default function Register() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-  }, [navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -56,48 +47,15 @@ export default function Register() {
     setErrors({});
     setLoading(true);
 
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            full_name: fullName.trim(),
-          },
-        },
-      });
-
-      if (error) {
-        if (error.message.includes("User already registered")) {
-          toast({
-            variant: "destructive",
-            title: "Registration failed",
-            description: "This email is already registered. Please login instead.",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Registration failed",
-            description: error.message,
-          });
-        }
-      } else {
-        toast({
-          title: "Check your email!",
-          description: "We've sent you a verification code.",
-        });
-        navigate("/verify-email", { state: { email: email.trim() } });
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Check your email!",
+        description: "We've sent you a verification code.",
       });
-    } finally {
+      navigate("/verify-email", { state: { email: email.trim() } });
       setLoading(false);
-    }
+    }, 1000);
   };
 
   return (

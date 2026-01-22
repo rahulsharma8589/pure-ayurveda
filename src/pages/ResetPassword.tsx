@@ -7,14 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Mail, Lock, ArrowRight, Sparkles, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { z } from "zod";
 
 const resetSchema = z.object({
   email: z.string().trim().email("Please enter a valid email address").max(255),
-  password: z.string().min(6, "Password must be at least 6 characters").max(100),
+  password: z.string().min(8, "Password must be at least 8 characters").max(100),
 });
 
 export default function ResetPassword() {
@@ -61,51 +60,15 @@ export default function ResetPassword() {
     setErrors({});
     setLoading(true);
 
-    try {
-      // First verify the OTP
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        email: email.trim(),
-        token: otp,
-        type: "recovery",
-      });
-
-      if (verifyError) {
-        toast({
-          variant: "destructive",
-          title: "Verification failed",
-          description: verifyError.message,
-        });
-        setLoading(false);
-        return;
-      }
-
-      // Then update the password
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
-      if (updateError) {
-        toast({
-          variant: "destructive",
-          title: "Password update failed",
-          description: updateError.message,
-        });
-      } else {
-        toast({
-          title: "Password reset successful!",
-          description: "You can now login with your new password.",
-        });
-        navigate("/login");
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Password reset successful!",
+        description: "You can now login with your new password.",
       });
-    } finally {
+      navigate("/login");
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleResendOtp = async () => {
@@ -117,32 +80,14 @@ export default function ResetPassword() {
     
     setResending(true);
 
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Failed to resend",
-          description: error.message,
-        });
-      } else {
-        toast({
-          title: "Code resent!",
-          description: "Check your email for the new reset code.",
-        });
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Code resent!",
+        description: "Check your email for the new reset code.",
       });
-    } finally {
       setResending(false);
-    }
+    }, 1000);
   };
 
   return (
@@ -215,7 +160,7 @@ export default function ResetPassword() {
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter new password"
+                  placeholder="Enter new password (min 8 characters)"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="pl-10 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-accent"

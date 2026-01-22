@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Mail, ArrowRight, Sparkles, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { z } from "zod";
@@ -29,14 +28,7 @@ export default function VerifyEmail() {
     if (location.state?.email) {
       setEmail(location.state.email);
     }
-
-    // Check if already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-  }, [location.state, navigate]);
+  }, [location.state]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,35 +51,15 @@ export default function VerifyEmail() {
     
     setLoading(true);
 
-    try {
-      const { error } = await supabase.auth.verifyOtp({
-        email: email.trim(),
-        token: otp,
-        type: "signup",
-      });
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Verification failed",
-          description: error.message,
-        });
-      } else {
-        toast({
-          title: "Email verified!",
-          description: "Welcome to Dinkar Ayurveda. You are now logged in.",
-        });
-        navigate("/");
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Email verified!",
+        description: "Welcome to Dinkar Ayurveda. You are now logged in.",
       });
-    } finally {
+      navigate("/");
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleResendOtp = async () => {
@@ -99,33 +71,14 @@ export default function VerifyEmail() {
     setEmailError("");
     setResending(true);
 
-    try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: email.trim(),
-      });
-
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "Failed to resend",
-          description: error.message,
-        });
-      } else {
-        toast({
-          title: "Code resent!",
-          description: "Check your email for the new verification code.",
-        });
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Code resent!",
+        description: "Check your email for the new verification code.",
       });
-    } finally {
       setResending(false);
-    }
+    }, 1000);
   };
 
   return (
