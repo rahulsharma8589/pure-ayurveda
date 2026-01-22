@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { z } from "zod";
@@ -23,22 +22,6 @@ export default function Login() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,48 +40,15 @@ export default function Login() {
     setErrors({});
     setLoading(true);
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-
-      if (error) {
-        if (error.message.includes("Invalid login credentials")) {
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: "Invalid email or password. Please try again.",
-          });
-        } else if (error.message.includes("Email not confirmed")) {
-          toast({
-            variant: "destructive",
-            title: "Email not verified",
-            description: "Please verify your email first.",
-          });
-          navigate("/verify-email", { state: { email: email.trim() } });
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: error.message,
-          });
-        }
-      } else {
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully logged in.",
-        });
-      }
-    } catch (error) {
+    // Simulate API call
+    setTimeout(() => {
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
       });
-    } finally {
+      navigate("/");
       setLoading(false);
-    }
+    }, 1000);
   };
 
   return (
