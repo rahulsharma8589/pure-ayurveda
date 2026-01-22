@@ -93,7 +93,7 @@ export const Header = () => {
               </Button>
             ) : (
               <Button size="sm" className="bg-primary hover:bg-primary/90 gap-2" asChild>
-                <Link to="/auth">
+                <Link to="/login">
                   <User className="w-4 h-4" />
                   Login
                 </Link>
@@ -153,7 +153,7 @@ export const Header = () => {
                   </Button>
                 ) : (
                   <Button size="sm" className="flex-1 bg-primary hover:bg-primary/90 gap-2" asChild>
-                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                       <User className="w-4 h-4" />
                       Login
                     </Link>
