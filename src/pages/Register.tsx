@@ -14,15 +14,20 @@ import { z } from "zod";
 const registerSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   email: z.string().trim().email("Please enter a valid email address").max(255),
-  password: z.string().min(6, "Password must be at least 6 characters").max(100),
+  password: z.string().min(8, "Password must be at least 8 characters").max(100),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; confirmPassword?: string; name?: string }>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -37,9 +42,9 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const result = registerSchema.safeParse({ name: fullName, email, password });
+    const result = registerSchema.safeParse({ name: fullName, email, password, confirmPassword });
     if (!result.success) {
-      const fieldErrors: { email?: string; password?: string; name?: string } = {};
+      const fieldErrors: { email?: string; password?: string; confirmPassword?: string; name?: string } = {};
       result.error.errors.forEach((err) => {
         const field = err.path[0] as string;
         fieldErrors[field as keyof typeof fieldErrors] = err.message;
@@ -160,13 +165,29 @@ export default function Register() {
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Create a password"
+                  placeholder="Create a password (min 8 characters)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-accent"
                 />
               </div>
               {errors.password && <p className="text-sm text-red-300">{errors.password}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-primary-foreground">Confirm Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-foreground/50" />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="pl-10 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 focus:border-accent"
+                />
+              </div>
+              {errors.confirmPassword && <p className="text-sm text-red-300">{errors.confirmPassword}</p>}
             </div>
 
             <Button
