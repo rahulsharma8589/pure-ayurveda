@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, Leaf, User } from "lucide-react";
+import { Menu, X, ShoppingBag, Leaf, User, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import { User as SupabaseUser } from "@supabase/supabase-js";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -15,22 +13,7 @@ const navLinks = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<SupabaseUser | null>(null);
   const location = useLocation();
-
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -75,21 +58,11 @@ export const Header = () => {
               <ShoppingBag className="w-4 h-4" />
               Cart
             </Button>
-            {user ? (
-              <Button size="sm" variant="ghost" className="gap-2" asChild>
-                <Link to="/profile">
-                  <User className="w-4 h-4" />
-                  Profile
-                </Link>
-              </Button>
-            ) : (
-              <Button size="sm" className="bg-primary hover:bg-primary/90 gap-2" asChild>
-                <Link to="/login">
-                  <User className="w-4 h-4" />
-                  Login
-                </Link>
-              </Button>
-            )}
+            <Button size="sm" variant="ghost" className="gap-2" asChild>
+              <Link to="/profile">
+                <UserCircle className="w-5 h-5" />
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -129,21 +102,12 @@ export const Header = () => {
                   <ShoppingBag className="w-4 h-4" />
                   Cart
                 </Button>
-                {user ? (
-                  <Button size="sm" className="flex-1 gap-2" variant="ghost" asChild>
-                    <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                      <User className="w-4 h-4" />
-                      Profile
-                    </Link>
-                  </Button>
-                ) : (
-                  <Button size="sm" className="flex-1 bg-primary hover:bg-primary/90 gap-2" asChild>
-                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                      <User className="w-4 h-4" />
-                      Login
-                    </Link>
-                  </Button>
-                )}
+                <Button size="sm" variant="ghost" className="flex-1 gap-2" asChild>
+                  <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                    <UserCircle className="w-5 h-5" />
+                    Profile
+                  </Link>
+                </Button>
               </div>
             </div>
           </nav>
