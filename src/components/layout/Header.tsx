@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, Leaf, User, UserCircle } from "lucide-react";
+import { Menu, X, ShoppingBag, Leaf, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
@@ -58,11 +58,12 @@ export const Header = () => {
               <ShoppingBag className="w-4 h-4" />
               Cart
             </Button>
-            <Button size="sm" variant="ghost" className="gap-2" asChild>
-              <Link to="/profile">
-                <UserCircle className="w-5 h-5" />
-              </Link>
-            </Button>
+            <Link 
+              to="/profile"
+              className="w-9 h-9 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors border border-primary/20"
+            >
+              <User className="w-4 h-4 text-primary" />
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -102,12 +103,14 @@ export const Header = () => {
                   <ShoppingBag className="w-4 h-4" />
                   Cart
                 </Button>
-                <Button size="sm" variant="ghost" className="flex-1 gap-2" asChild>
-                  <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
-                    <UserCircle className="w-5 h-5" />
-                    Profile
-                  </Link>
-                </Button>
+                <Link 
+                  to="/profile" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex-1 h-9 rounded-lg bg-primary/10 hover:bg-primary/20 flex items-center justify-center gap-2 text-sm font-medium text-primary transition-colors border border-primary/20"
+                >
+                  <User className="w-4 h-4" />
+                  Profile
+                </Link>
               </div>
             </div>
           </nav>
