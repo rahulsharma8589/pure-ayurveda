@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, Leaf, User } from "lucide-react";
+import { Menu, X, ShoppingBag, Leaf, User, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
+import { products } from "@/data/products";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -13,9 +23,24 @@ const navLinks = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.shortName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleProductClick = (productId: string) => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    navigate("/products");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -54,6 +79,53 @@ export const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
+            <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+              <DialogTrigger asChild>
+                <button className="w-9 h-9 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors">
+                  <Search className="w-4 h-4 text-muted-foreground" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Search Products</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search for products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                      autoFocus
+                    />
+                  </div>
+                  {searchQuery && (
+                    <div className="max-h-64 overflow-y-auto space-y-2">
+                      {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
+                          <button
+                            key={product.id}
+                            onClick={() => handleProductClick(product.id)}
+                            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors text-left"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                              <span className="text-lg">🌿</span>
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm text-foreground">{product.shortName}</p>
+                              <p className="text-xs text-muted-foreground">{product.category}</p>
+                            </div>
+                          </button>
+                        ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground text-center py-4">No products found</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
             <Button variant="outline" size="sm" className="gap-2">
               <ShoppingBag className="w-4 h-4" />
               Cart
@@ -99,6 +171,15 @@ export const Header = () => {
                 </Link>
               ))}
               <div className="flex gap-2 mt-4 px-4">
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsSearchOpen(true);
+                }}
+                className="w-9 h-9 rounded-lg bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors"
+              >
+                <Search className="w-4 h-4 text-muted-foreground" />
+              </button>
                 <Button variant="outline" size="sm" className="flex-1 gap-2">
                   <ShoppingBag className="w-4 h-4" />
                   Cart
