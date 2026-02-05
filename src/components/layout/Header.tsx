@@ -4,6 +4,7 @@ import { Menu, X, ShoppingBag, Leaf, User, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { products } from "@/data/products";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -37,51 +38,103 @@ export const Header = () => {
   return (
     <>
       {/* Search Overlay */}
-      {isSearchOpen && (
-        <div className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-md">
-          <div className="container mx-auto px-4">
-            {/* Search Header */}
-            <div className="flex items-center justify-between h-16 md:h-20 border-b border-border">
-              <div className="flex-1 max-w-2xl mx-auto">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search for products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full h-12 pl-12 pr-4 text-lg bg-secondary/50 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground"
-                    autoFocus
-                  />
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setIsSearchOpen(false);
-                  setSearchQuery("");
-                }}
-                className="ml-4 p-2 hover:bg-secondary rounded-full transition-colors"
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[60] bg-background"
+          >
+            <div className="container mx-auto px-4">
+              {/* Search Header */}
+              <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+                className="flex items-center justify-between h-16 md:h-20 border-b border-border"
               >
-                <X className="w-6 h-6 text-foreground" />
-              </button>
-            </div>
+                <div className="flex-1 max-w-2xl mx-auto">
+                  <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search for products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full h-12 pl-12 pr-4 text-lg bg-secondary border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground"
+                      autoFocus
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }}
+                  className="ml-4 p-2 hover:bg-secondary rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6 text-foreground" />
+                </button>
+              </motion.div>
 
-            {/* Search Results */}
-            <div className="py-8 max-h-[calc(100vh-5rem)] overflow-y-auto">
-              {searchQuery ? (
-                <div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {filteredProducts.length} results for "{searchQuery}"
-                  </p>
-                  {filteredProducts.length > 0 ? (
+              {/* Search Results */}
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.15 }}
+                className="py-8 max-h-[calc(100vh-5rem)] overflow-y-auto"
+              >
+                {searchQuery ? (
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {filteredProducts.length} results for "{searchQuery}"
+                    </p>
+                    {filteredProducts.length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {filteredProducts.map((product, index) => (
+                          <motion.button
+                            key={product.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2, delay: index * 0.05 }}
+                            onClick={() => handleProductClick(product.id)}
+                            className="group p-4 rounded-xl bg-card hover:bg-secondary border border-border/50 transition-all text-left"
+                          >
+                            <div className="aspect-square rounded-lg bg-secondary flex items-center justify-center mb-3">
+                              <span className="text-4xl">🌿</span>
+                            </div>
+                            <p className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                              {product.shortName}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
+                            <p className="text-sm font-semibold text-primary mt-2">
+                              ₹{product.variants[0].salePrice}
+                            </p>
+                          </motion.button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-muted-foreground">No products found for "{searchQuery}"</p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-4">Popular Products</p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {filteredProducts.map((product) => (
-                        <button
+                      {products.filter(p => p.featured).map((product, index) => (
+                        <motion.button
                           key={product.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2, delay: index * 0.05 }}
                           onClick={() => handleProductClick(product.id)}
-                          className="group p-4 rounded-xl bg-card hover:bg-secondary/50 border border-border/50 transition-all text-left"
+                          className="group p-4 rounded-xl bg-card hover:bg-secondary border border-border/50 transition-all text-left"
                         >
-                          <div className="aspect-square rounded-lg bg-secondary/50 flex items-center justify-center mb-3">
+                          <div className="aspect-square rounded-lg bg-secondary flex items-center justify-center mb-3">
                             <span className="text-4xl">🌿</span>
                           </div>
                           <p className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
@@ -91,44 +144,16 @@ export const Header = () => {
                           <p className="text-sm font-semibold text-primary mt-2">
                             ₹{product.variants[0].salePrice}
                           </p>
-                        </button>
+                        </motion.button>
                       ))}
                     </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <p className="text-muted-foreground">No products found for "{searchQuery}"</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <p className="text-sm font-medium text-foreground mb-4">Popular Products</p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {products.filter(p => p.featured).map((product) => (
-                      <button
-                        key={product.id}
-                        onClick={() => handleProductClick(product.id)}
-                        className="group p-4 rounded-xl bg-card hover:bg-secondary/50 border border-border/50 transition-all text-left"
-                      >
-                        <div className="aspect-square rounded-lg bg-secondary/50 flex items-center justify-center mb-3">
-                          <span className="text-4xl">🌿</span>
-                        </div>
-                        <p className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                          {product.shortName}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
-                        <p className="text-sm font-semibold text-primary mt-2">
-                          ₹{product.variants[0].salePrice}
-                        </p>
-                      </button>
-                    ))}
                   </div>
-                </div>
-              )}
+                )}
+              </motion.div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
