@@ -88,8 +88,11 @@ const Profile = () => {
 
             <Separator className="my-4" />
 
-            {/* Addresses */}
-            <button className="flex items-center justify-between w-full py-4 hover:bg-muted/50 transition-colors rounded-lg px-1">
+            {/* Addresses - Navigate to addresses page */}
+            <button 
+              className="flex items-center justify-between w-full py-4 hover:bg-muted/50 transition-colors rounded-lg px-1"
+              onClick={() => navigate("/addresses")}
+            >
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-muted-foreground" />
                 <span className="text-foreground font-medium">Addresses</span>
