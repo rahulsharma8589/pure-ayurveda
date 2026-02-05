@@ -2,14 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag, Leaf, User, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { products } from "@/data/products";
 
@@ -43,7 +35,102 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+    <>
+      {/* Search Overlay */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 z-[60] bg-background/98 backdrop-blur-md">
+          <div className="container mx-auto px-4">
+            {/* Search Header */}
+            <div className="flex items-center justify-between h-16 md:h-20 border-b border-border">
+              <div className="flex-1 max-w-2xl mx-auto">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Search for products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full h-12 pl-12 pr-4 text-lg bg-secondary/50 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground"
+                    autoFocus
+                  />
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsSearchOpen(false);
+                  setSearchQuery("");
+                }}
+                className="ml-4 p-2 hover:bg-secondary rounded-full transition-colors"
+              >
+                <X className="w-6 h-6 text-foreground" />
+              </button>
+            </div>
+
+            {/* Search Results */}
+            <div className="py-8 max-h-[calc(100vh-5rem)] overflow-y-auto">
+              {searchQuery ? (
+                <div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {filteredProducts.length} results for "{searchQuery}"
+                  </p>
+                  {filteredProducts.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {filteredProducts.map((product) => (
+                        <button
+                          key={product.id}
+                          onClick={() => handleProductClick(product.id)}
+                          className="group p-4 rounded-xl bg-card hover:bg-secondary/50 border border-border/50 transition-all text-left"
+                        >
+                          <div className="aspect-square rounded-lg bg-secondary/50 flex items-center justify-center mb-3">
+                            <span className="text-4xl">🌿</span>
+                          </div>
+                          <p className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                            {product.shortName}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
+                          <p className="text-sm font-semibold text-primary mt-2">
+                            ₹{product.variants[0].salePrice}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground">No products found for "{searchQuery}"</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-4">Popular Products</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {products.filter(p => p.featured).map((product) => (
+                      <button
+                        key={product.id}
+                        onClick={() => handleProductClick(product.id)}
+                        className="group p-4 rounded-xl bg-card hover:bg-secondary/50 border border-border/50 transition-all text-left"
+                      >
+                        <div className="aspect-square rounded-lg bg-secondary/50 flex items-center justify-center mb-3">
+                          <span className="text-4xl">🌿</span>
+                        </div>
+                        <p className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                          {product.shortName}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
+                        <p className="text-sm font-semibold text-primary mt-2">
+                          ₹{product.variants[0].salePrice}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -79,53 +166,12 @@ export const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-              <DialogTrigger asChild>
-                <button className="w-9 h-9 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors">
-                  <Search className="w-4 h-4 text-muted-foreground" />
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Search Products</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search for products..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                      autoFocus
-                    />
-                  </div>
-                  {searchQuery && (
-                    <div className="max-h-64 overflow-y-auto space-y-2">
-                      {filteredProducts.length > 0 ? (
-                        filteredProducts.map((product) => (
-                          <button
-                            key={product.id}
-                            onClick={() => handleProductClick(product.id)}
-                            className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary transition-colors text-left"
-                          >
-                            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                              <span className="text-lg">🌿</span>
-                            </div>
-                            <div>
-                              <p className="font-medium text-sm text-foreground">{product.shortName}</p>
-                              <p className="text-xs text-muted-foreground">{product.category}</p>
-                            </div>
-                          </button>
-                        ))
-                      ) : (
-                        <p className="text-sm text-muted-foreground text-center py-4">No products found</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </DialogContent>
-            </Dialog>
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="w-9 h-9 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center transition-colors"
+            >
+              <Search className="w-4 h-4 text-muted-foreground" />
+            </button>
             <Button variant="outline" size="sm" className="gap-2">
               <ShoppingBag className="w-4 h-4" />
               Cart
@@ -198,5 +244,6 @@ export const Header = () => {
         )}
       </div>
     </header>
+    </>
   );
 };
