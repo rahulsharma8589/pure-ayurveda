@@ -3,10 +3,15 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { products, categories } from "@/data/products";
 import { ShoppingBag, Star, Check } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedVariants, setSelectedVariants] = useState<Record<string, number>>({});
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
 
   const filteredProducts = activeCategory === "All" 
     ? products 
@@ -132,7 +137,24 @@ const Products = () => {
                       </div>
 
                       {/* CTA */}
-                      <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
+                      <Button
+                        className="w-full gap-2 bg-primary hover:bg-primary/90"
+                        onClick={() => {
+                          addToCart({
+                            productId: product.id,
+                            productName: product.name,
+                            shortName: product.shortName,
+                            category: product.category,
+                            size: selectedVariant.size,
+                            mrp: selectedVariant.mrp,
+                            salePrice: selectedVariant.salePrice,
+                          });
+                          toast({
+                            title: "Added to cart!",
+                            description: `${product.shortName} (${selectedVariant.size}) added.`,
+                          });
+                        }}
+                      >
                         <ShoppingBag className="w-4 h-4" />
                         Add to Cart
                       </Button>

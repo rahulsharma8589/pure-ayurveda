@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { products } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -20,6 +21,7 @@ export const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { totalItems, openCart } = useCart();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -197,9 +199,14 @@ export const Header = () => {
             >
               <Search className="w-4 h-4 text-muted-foreground" />
             </button>
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2 relative" onClick={openCart}>
               <ShoppingBag className="w-4 h-4" />
               Cart
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                  {totalItems > 9 ? "9+" : totalItems}
+                </span>
+              )}
             </Button>
             <Link 
               to="/profile"
@@ -251,9 +258,14 @@ export const Header = () => {
               >
                 <Search className="w-4 h-4 text-muted-foreground" />
               </button>
-                <Button variant="outline" size="sm" className="flex-1 gap-2">
+                <Button variant="outline" size="sm" className="flex-1 gap-2 relative" onClick={() => { setIsMenuOpen(false); openCart(); }}>
                   <ShoppingBag className="w-4 h-4" />
                   Cart
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-2 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                      {totalItems > 9 ? "9+" : totalItems}
+                    </span>
+                  )}
                 </Button>
                 <Link 
                   to="/profile" 
