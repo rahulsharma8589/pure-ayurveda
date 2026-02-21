@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { products, categories } from "@/data/products";
@@ -60,9 +61,10 @@ const Products = () => {
               const selectedVariant = getSelectedVariant(product.id, product.variants);
               
               return (
-                <div
+                <Link
+                  to={`/products/${product.id}`}
                   key={product.id}
-                  className="bg-card rounded-2xl overflow-hidden shadow-card border border-border/50"
+                  className="bg-card rounded-2xl overflow-hidden shadow-card border border-border/50 block hover:shadow-lg transition-shadow"
                 >
                   <div className="grid md:grid-cols-2">
                     {/* Image */}
@@ -108,7 +110,7 @@ const Products = () => {
                           {product.variants.map((variant, index) => (
                             <button
                               key={variant.size}
-                              onClick={() => setSelectedVariants(prev => ({ ...prev, [product.id]: index }))}
+                              onClick={(e) => { e.preventDefault(); setSelectedVariants(prev => ({ ...prev, [product.id]: index })); }}
                               className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                                 (selectedVariants[product.id] || 0) === index
                                   ? "border-primary bg-primary/10 text-primary"
@@ -137,6 +139,7 @@ const Products = () => {
                       </div>
 
                       {/* CTA */}
+                      <div onClick={(e) => e.preventDefault()}>
                       {(() => {
                         const cartItem = items.find(
                           (i) => i.productId === product.id && i.size === selectedVariant.size
@@ -146,7 +149,7 @@ const Products = () => {
                             <div className="w-full flex items-center rounded-lg border border-primary overflow-hidden">
                               <button
                                 className="flex-1 h-10 flex items-center justify-center bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-colors"
-                                onClick={() => updateQuantity(product.id, selectedVariant.size, cartItem.quantity - 1)}
+                                onClick={(e) => { e.preventDefault(); updateQuantity(product.id, selectedVariant.size, cartItem.quantity - 1); }}
                               >
                                 −
                               </button>
@@ -155,7 +158,7 @@ const Products = () => {
                               </span>
                               <button
                                 className="flex-1 h-10 flex items-center justify-center bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-colors"
-                                onClick={() => updateQuantity(product.id, selectedVariant.size, cartItem.quantity + 1)}
+                                onClick={(e) => { e.preventDefault(); updateQuantity(product.id, selectedVariant.size, cartItem.quantity + 1); }}
                               >
                                 +
                               </button>
@@ -165,7 +168,8 @@ const Products = () => {
                         return (
                           <Button
                             className="w-full gap-2 bg-primary hover:bg-primary/90"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               addToCart({
                                 productId: product.id,
                                 productName: product.name,
@@ -186,9 +190,10 @@ const Products = () => {
                           </Button>
                         );
                       })()}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
