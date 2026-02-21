@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedVariants, setSelectedVariants] = useState<Record<string, number>>({});
-  const { addToCart } = useCart();
+  const { addToCart, items, updateQuantity } = useCart();
   const { toast } = useToast();
 
 
@@ -137,27 +137,55 @@ const Products = () => {
                       </div>
 
                       {/* CTA */}
-                      <Button
-                        className="w-full gap-2 bg-primary hover:bg-primary/90"
-                        onClick={() => {
-                          addToCart({
-                            productId: product.id,
-                            productName: product.name,
-                            shortName: product.shortName,
-                            category: product.category,
-                            size: selectedVariant.size,
-                            mrp: selectedVariant.mrp,
-                            salePrice: selectedVariant.salePrice,
-                          });
-                          toast({
-                            title: "Added to cart!",
-                            description: `${product.shortName} (${selectedVariant.size}) added.`,
-                          });
-                        }}
-                      >
-                        <ShoppingBag className="w-4 h-4" />
-                        Add to Cart
-                      </Button>
+                      {(() => {
+                        const cartItem = items.find(
+                          (i) => i.productId === product.id && i.size === selectedVariant.size
+                        );
+                        if (cartItem) {
+                          return (
+                            <div className="w-full flex items-center rounded-lg border border-primary overflow-hidden">
+                              <button
+                                className="flex-1 h-10 flex items-center justify-center bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-colors"
+                                onClick={() => updateQuantity(product.id, selectedVariant.size, cartItem.quantity - 1)}
+                              >
+                                −
+                              </button>
+                              <span className="flex-[2] h-10 flex items-center justify-center text-foreground font-semibold text-base bg-background">
+                                {cartItem.quantity}
+                              </span>
+                              <button
+                                className="flex-1 h-10 flex items-center justify-center bg-primary text-primary-foreground font-bold text-lg hover:bg-primary/90 transition-colors"
+                                onClick={() => updateQuantity(product.id, selectedVariant.size, cartItem.quantity + 1)}
+                              >
+                                +
+                              </button>
+                            </div>
+                          );
+                        }
+                        return (
+                          <Button
+                            className="w-full gap-2 bg-primary hover:bg-primary/90"
+                            onClick={() => {
+                              addToCart({
+                                productId: product.id,
+                                productName: product.name,
+                                shortName: product.shortName,
+                                category: product.category,
+                                size: selectedVariant.size,
+                                mrp: selectedVariant.mrp,
+                                salePrice: selectedVariant.salePrice,
+                              });
+                              toast({
+                                title: "Added to cart!",
+                                description: `${product.shortName} (${selectedVariant.size}) added.`,
+                              });
+                            }}
+                          >
+                            <ShoppingBag className="w-4 h-4" />
+                            Add to Cart
+                          </Button>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
