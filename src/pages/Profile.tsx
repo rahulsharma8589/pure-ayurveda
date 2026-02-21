@@ -103,13 +103,13 @@ const Profile = () => {
             <Separator />
 
             {/* My Orders */}
-            <button className="flex items-center justify-between w-full py-4 hover:bg-muted/50 transition-colors rounded-lg px-1">
+            <button 
+              className="flex items-center justify-between w-full py-4 hover:bg-muted/50 transition-colors rounded-lg px-1"
+              onClick={() => navigate("/orders")}
+            >
               <div className="flex items-center gap-3">
                 <Package className="h-5 w-5 text-muted-foreground" />
-                <div className="text-left">
-                  <span className="text-foreground font-medium block">My Orders</span>
-                  <span className="text-sm text-muted-foreground">No orders found</span>
-                </div>
+                <span className="text-foreground font-medium">My Orders</span>
               </div>
               <ChevronRight className="h-5 w-5 text-muted-foreground" />
             </button>
