@@ -71,12 +71,60 @@ const Checkout = () => {
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
 
-  const handlePlaceOrder = () => {
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+  const handlePlaceOrder = async () => {
     if (!selectedAddressId) {
       toast({ title: "Please select a delivery address", variant: "destructive" });
       return;
     }
-    toast({ title: "Order placed successfully!", description: "Thank you for your purchase." });
+
+    setIsPlacingOrder(true);
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) {
+        navigate("/login");
+        return;
+      }
+
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          user_id: userData.user.id,
+          address_id: selectedAddressId,
+          total: totalPrice,
+          subtotal: totalPrice + savings,
+          savings: savings,
+          status: "confirmed",
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      const orderItems = items.map((item) => ({
+        order_id: order.id,
+        product_id: item.productId,
+        product_name: item.shortName,
+        variant_size: item.size,
+        quantity: item.quantity,
+        price: item.salePrice,
+        mrp: item.mrp,
+      }));
+
+      const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
+      if (itemsError) throw itemsError;
+
+      // Clear cart
+      items.forEach((item) => removeFromCart(item.productId, item.size));
+
+      toast({ title: "Order placed successfully!", description: "Thank you for your purchase." });
+      navigate("/orders");
+    } catch (error: any) {
+      toast({ title: "Failed to place order", description: error.message, variant: "destructive" });
+    } finally {
+      setIsPlacingOrder(false);
+    }
   };
 
   if (items.length === 0) return null;
@@ -261,9 +309,9 @@ const Checkout = () => {
                     </div>
                   )}
 
-                  <Button className="w-full h-12 text-base gap-2" onClick={handlePlaceOrder}>
+                  <Button className="w-full h-12 text-base gap-2" onClick={handlePlaceOrder} disabled={isPlacingOrder}>
                     <CreditCard className="w-4 h-4" />
-                    Place Order
+                    {isPlacingOrder ? "Placing Order..." : "Place Order"}
                   </Button>
                 </div>
               </div>
