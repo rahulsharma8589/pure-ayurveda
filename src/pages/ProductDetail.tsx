@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { products } from "@/data/products";
+import { findIngredientByName } from "@/data/ingredients";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
@@ -166,11 +167,22 @@ const ProductDetail = () => {
                 <div className="mb-6">
                   <h3 className="font-serif text-lg font-semibold text-foreground mb-3">Ingredients</h3>
                   <div className="flex flex-wrap gap-2">
-                    {product.ingredients.map((ingredient, i) => (
-                      <span key={i} className="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded-full">
-                        {ingredient}
-                      </span>
-                    ))}
+                    {product.ingredients.map((ingredient, i) => {
+                      const matched = findIngredientByName(ingredient);
+                      return matched ? (
+                        <Link
+                          key={i}
+                          to={`/ingredients/${matched.id}`}
+                          className="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded-full hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer"
+                        >
+                          {ingredient}
+                        </Link>
+                      ) : (
+                        <span key={i} className="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded-full">
+                          {ingredient}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               )}
