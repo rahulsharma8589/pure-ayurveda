@@ -40,6 +40,10 @@
 
     --radius: 0.75rem;
 
+    /* Hero panel — intentionally deep green in both themes */
+    --hero: 152 45% 16%;
+    --hero-foreground: 44 46% 96%;
+
     /* Custom Ayurvedic Colors */
     --terracotta: 15 58% 48%;
     --turmeric: 42 92% 52%;
