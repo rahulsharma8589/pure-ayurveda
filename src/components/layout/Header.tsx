@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { products } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -199,6 +200,7 @@ export const Header = () => {
             >
               <Search className="w-4 h-4 text-muted-foreground" />
             </button>
+            <ThemeToggle />
             <Button variant="outline" size="sm" className="gap-2 relative" onClick={openCart}>
               <ShoppingBag className="w-4 h-4" />
               Cart
@@ -249,6 +251,7 @@ export const Header = () => {
                 </Link>
               ))}
               <div className="flex gap-2 mt-4 px-4">
+              <ThemeToggle />
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
