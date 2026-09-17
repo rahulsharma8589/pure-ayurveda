@@ -84,7 +84,7 @@ export const HeroSection = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-hero-foreground/30 text-primary-foreground hover:bg-hero-foreground/10 text-base px-8 transition-all duration-300 hover:-translate-y-0.5"
+                  className="bg-transparent border-hero-foreground/40 text-hero-foreground hover:bg-hero-foreground/10 hover:text-hero-foreground text-base px-8 transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Our Story
                 </Button>
