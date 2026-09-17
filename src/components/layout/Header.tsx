@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { products } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { name: "Home", path: "/" },
