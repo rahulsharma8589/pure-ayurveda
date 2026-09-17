@@ -59,6 +59,7 @@ const App = () => (
           <CartDrawer />
         </BrowserRouter>
       </CartProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
