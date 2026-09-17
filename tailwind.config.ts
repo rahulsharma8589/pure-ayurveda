@@ -51,6 +51,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        hero: {
+          DEFAULT: "hsl(var(--hero))",
+          foreground: "hsl(var(--hero-foreground))",
+        },
         terracotta: "hsl(var(--terracotta))",
         turmeric: "hsl(var(--turmeric))",
         neem: "hsl(var(--neem))",
