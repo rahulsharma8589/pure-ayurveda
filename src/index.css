@@ -6,104 +6,114 @@
 
 @layer base {
   :root {
-    /* Ayurvedic Nature Palette */
-    --background: 45 30% 97%;
-    --foreground: 30 25% 15%;
+    /* Ayurvedic Nature Palette — light */
+    --background: 44 44% 97%;
+    --foreground: 152 22% 13%;
 
-    --card: 45 25% 95%;
-    --card-foreground: 30 25% 15%;
+    --card: 42 50% 99%;
+    --card-foreground: 152 22% 13%;
 
-    --popover: 45 30% 97%;
-    --popover-foreground: 30 25% 15%;
+    --popover: 42 50% 99%;
+    --popover-foreground: 152 22% 13%;
 
     /* Deep Forest Green */
-    --primary: 150 35% 25%;
-    --primary-foreground: 45 30% 97%;
+    --primary: 152 42% 22%;
+    --primary-foreground: 44 50% 98%;
 
     /* Warm Cream */
-    --secondary: 40 30% 92%;
-    --secondary-foreground: 30 25% 20%;
+    --secondary: 40 38% 92%;
+    --secondary-foreground: 152 24% 18%;
 
-    --muted: 40 20% 90%;
-    --muted-foreground: 30 15% 45%;
+    --muted: 42 28% 91%;
+    --muted-foreground: 150 12% 42%;
 
     /* Saffron Gold */
-    --accent: 35 85% 55%;
-    --accent-foreground: 30 25% 15%;
+    --accent: 36 88% 52%;
+    --accent-foreground: 30 40% 12%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 35 20% 85%;
-    --input: 35 20% 85%;
-    --ring: 150 35% 25%;
+    --border: 40 24% 87%;
+    --input: 40 24% 87%;
+    --ring: 152 42% 28%;
 
     --radius: 0.75rem;
 
     /* Custom Ayurvedic Colors */
-    --terracotta: 15 55% 50%;
-    --turmeric: 42 90% 55%;
-    --neem: 145 40% 35%;
-    --sandalwood: 30 35% 75%;
-    --lotus: 340 45% 65%;
+    --terracotta: 15 58% 48%;
+    --turmeric: 42 92% 52%;
+    --neem: 148 42% 32%;
+    --sandalwood: 30 38% 72%;
+    --lotus: 340 48% 62%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(150 35% 25% / 0.95), hsl(150 40% 20% / 0.9));
-    --gradient-gold: linear-gradient(135deg, hsl(35 85% 55%), hsl(42 90% 60%));
-    --gradient-nature: linear-gradient(180deg, hsl(45 30% 97%), hsl(40 30% 92%));
+    --gradient-hero: linear-gradient(135deg, hsl(152 42% 20% / 0.96), hsl(155 45% 14% / 0.92));
+    --gradient-gold: linear-gradient(135deg, hsl(36 88% 52%), hsl(44 92% 60%));
+    --gradient-nature: linear-gradient(180deg, hsl(44 44% 97%), hsl(40 38% 92%));
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(30 25% 15% / 0.1);
-    --shadow-card: 0 8px 30px -8px hsl(30 25% 15% / 0.12);
-    --shadow-elevated: 0 20px 50px -15px hsl(30 25% 15% / 0.15);
+    --shadow-soft: 0 4px 20px -6px hsl(152 30% 12% / 0.12);
+    --shadow-card: 0 10px 30px -12px hsl(152 30% 12% / 0.14);
+    --shadow-elevated: 0 24px 55px -20px hsl(152 30% 12% / 0.2);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 42 40% 98%;
+    --sidebar-foreground: 152 22% 18%;
+    --sidebar-primary: 152 42% 22%;
+    --sidebar-primary-foreground: 44 50% 98%;
+    --sidebar-accent: 40 34% 93%;
+    --sidebar-accent-foreground: 152 24% 18%;
+    --sidebar-border: 40 24% 87%;
+    --sidebar-ring: 152 42% 28%;
   }
 
   .dark {
-    --background: 30 20% 8%;
-    --foreground: 45 25% 95%;
+    /* Deep forest night */
+    --background: 156 22% 7%;
+    --foreground: 44 30% 94%;
 
-    --card: 30 20% 12%;
-    --card-foreground: 45 25% 95%;
+    --card: 156 18% 11%;
+    --card-foreground: 44 30% 94%;
 
-    --popover: 30 20% 10%;
-    --popover-foreground: 45 25% 95%;
+    --popover: 156 20% 10%;
+    --popover-foreground: 44 30% 94%;
 
-    --primary: 145 40% 45%;
-    --primary-foreground: 30 20% 8%;
+    /* Fresh leaf green, bright enough on dark */
+    --primary: 150 46% 52%;
+    --primary-foreground: 156 30% 8%;
 
-    --secondary: 30 15% 18%;
-    --secondary-foreground: 45 25% 90%;
+    --secondary: 156 14% 16%;
+    --secondary-foreground: 44 26% 92%;
 
-    --muted: 30 15% 20%;
-    --muted-foreground: 40 15% 60%;
+    --muted: 156 12% 18%;
+    --muted-foreground: 44 14% 68%;
 
-    --accent: 35 80% 50%;
-    --accent-foreground: 30 20% 8%;
+    --accent: 40 88% 60%;
+    --accent-foreground: 156 30% 9%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 52%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 22%;
-    --input: 30 15% 22%;
-    --ring: 145 40% 45%;
+    --border: 156 12% 20%;
+    --input: 156 12% 22%;
+    --ring: 150 46% 52%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --gradient-hero: linear-gradient(135deg, hsl(156 30% 10% / 0.96), hsl(158 32% 6% / 0.94));
+    --gradient-gold: linear-gradient(135deg, hsl(40 88% 60%), hsl(46 92% 68%));
+    --gradient-nature: linear-gradient(180deg, hsl(156 22% 7%), hsl(156 18% 11%));
+
+    --shadow-soft: 0 4px 20px -6px hsl(0 0% 0% / 0.5);
+    --shadow-card: 0 10px 30px -12px hsl(0 0% 0% / 0.55);
+    --shadow-elevated: 0 24px 55px -20px hsl(0 0% 0% / 0.65);
+
+    --sidebar-background: 156 20% 9%;
+    --sidebar-foreground: 44 26% 92%;
+    --sidebar-primary: 150 46% 52%;
+    --sidebar-primary-foreground: 156 30% 8%;
+    --sidebar-accent: 156 14% 16%;
+    --sidebar-accent-foreground: 44 26% 92%;
+    --sidebar-border: 156 12% 20%;
+    --sidebar-ring: 150 46% 52%;
   }
 }
 
