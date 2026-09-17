@@ -6,7 +6,7 @@ import heroImage from "@/assets/hero-ayurveda.jpg";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-primary">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-hero">
       
       {/* Background Image Layer - Right aligned */}
       <div 
@@ -15,7 +15,7 @@ export const HeroSection = () => {
       />
       
       {/* Gradient Fade Layer - Fades from solid green left to transparent right */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 via-40% to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-hero via-hero/95 via-40% to-transparent" />
 
       {/* Content Layer */}
       <div className="container mx-auto px-4 relative z-10">
@@ -31,18 +31,18 @@ export const HeroSection = () => {
             
             {/* Badge */}
             <motion.div 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-foreground/10 rounded-full border border-primary-foreground/20"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-hero-foreground/10 rounded-full border border-hero-foreground/20"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-primary-foreground">100% Natural & Ayurvedic</span>
+              <span className="text-sm font-medium text-hero-foreground">100% Natural & Ayurvedic</span>
             </motion.div>
 
             {/* Heading */}
             <motion.h1 
-              className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-primary-foreground"
+              className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-hero-foreground"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
@@ -54,7 +54,7 @@ export const HeroSection = () => {
 
             {/* Paragraph */}
             <motion.p 
-              className="text-lg text-primary-foreground/80 max-w-xl leading-relaxed"
+              className="text-lg text-hero-foreground/80 max-w-xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
@@ -84,7 +84,7 @@ export const HeroSection = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8 transition-all duration-300 hover:-translate-y-0.5"
+                  className="border-hero-foreground/30 text-primary-foreground hover:bg-hero-foreground/10 text-base px-8 transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Our Story
                 </Button>
@@ -105,12 +105,12 @@ export const HeroSection = () => {
               ].map((badge, index) => (
                 <motion.div 
                   key={badge.label} 
-                  className="flex items-center gap-2 text-sm text-primary-foreground/80"
+                  className="flex items-center gap-2 text-sm text-hero-foreground/80"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.9 + index * 0.1, duration: 0.4 }}
                 >
-                  <span className="w-7 h-7 rounded-full bg-primary-foreground/10 flex items-center justify-center text-xs border border-primary-foreground/20">
+                  <span className="w-7 h-7 rounded-full bg-hero-foreground/10 flex items-center justify-center text-xs border border-hero-foreground/20">
                     {badge.icon}
                   </span>
                   {badge.label}

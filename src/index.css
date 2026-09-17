@@ -102,6 +102,9 @@
     --input: 156 12% 22%;
     --ring: 150 46% 52%;
 
+    --hero: 156 42% 10%;
+    --hero-foreground: 44 40% 94%;
+
     --gradient-hero: linear-gradient(135deg, hsl(156 30% 10% / 0.96), hsl(158 32% 6% / 0.94));
     --gradient-gold: linear-gradient(135deg, hsl(40 88% 60%), hsl(46 92% 68%));
     --gradient-nature: linear-gradient(180deg, hsl(156 22% 7%), hsl(156 18% 11%));
